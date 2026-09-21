@@ -63,3 +63,8 @@ server.log
 /Caddyfile
 /agent-ctx/
 prompt
+# Scaffold demos (not needed for deployment)
+/examples/
+/mini-services/
+/scripts/
+/tests/
