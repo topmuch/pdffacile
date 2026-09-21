@@ -9,6 +9,7 @@ interface FileDropzoneProps {
   accept: string;
   multiple: boolean;
   onFiles: (files: File[]) => void;
+  onInvalidFiles?: (rejected: string[]) => void;
   color: string;
   disabled?: boolean;
   hint?: string;
@@ -16,14 +17,44 @@ interface FileDropzoneProps {
 
 function prettyAccept(accept: string): string {
   if (accept === "application/pdf") return "PDF";
+  if (accept.includes("image/jpeg")) return "JPG";
   if (accept.startsWith("image/")) return "JPG, PNG, WebP…";
+  if (accept.includes(".docx")) return "Word (.docx)";
+  if (accept.includes(".pptx")) return "PowerPoint (.pptx)";
+  if (accept.includes(".xlsx")) return "Excel (.xlsx, .csv)";
   return accept;
+}
+
+/** Build a matcher from the `accept` attribute (MIME types + extensions). */
+function buildAcceptMatcher(accept: string): (file: File) => boolean {
+  const mimes: string[] = [];
+  const exts: string[] = [];
+  for (const part of accept.split(",")) {
+    const token = part.trim().toLowerCase();
+    if (!token) continue;
+    if (token.startsWith(".")) exts.push(token);
+    else mimes.push(token);
+  }
+  return (file) => {
+    const type = (file.type || "").toLowerCase();
+    const name = file.name.toLowerCase();
+    if (exts.some((ext) => name.endsWith(ext))) return true;
+    if (mimes.includes(type)) return true;
+    // Wildcard MIME groups like image/*
+    if (mimes.some((m) => m.endsWith("/*") && type.startsWith(m.slice(0, -1)))) {
+      return true;
+    }
+    // jpg/jpeg fallback via extension when MIME is missing
+    if (mimes.includes("image/jpeg") && /\.jpe?g$/.test(name)) return true;
+    return false;
+  };
 }
 
 export function FileDropzone({
   accept,
   multiple,
   onFiles,
+  onInvalidFiles,
   color,
   disabled,
   hint,
@@ -35,9 +66,13 @@ export function FileDropzone({
     (list: FileList | null) => {
       if (!list || disabled) return;
       const files = Array.from(list);
-      if (files.length) onFiles(multiple ? files : [files[0]]);
+      const matcher = buildAcceptMatcher(accept);
+      const valid = files.filter(matcher);
+      const rejected = files.filter((f) => !matcher(f)).map((f) => f.name);
+      if (rejected.length && onInvalidFiles) onInvalidFiles(rejected);
+      if (valid.length) onFiles(multiple ? valid : [valid[0]]);
     },
-    [disabled, multiple, onFiles]
+    [disabled, multiple, onFiles, onInvalidFiles, accept]
   );
 
   return (

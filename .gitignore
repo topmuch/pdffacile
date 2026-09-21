@@ -57,12 +57,16 @@ server.log
 /db/
 /.zscripts/
 /test-assets/
+/testfiles/
 /download/
 /deploy-check/
 /worklog.md
 /Caddyfile
 /agent-ctx/
 prompt
+# Captures d'écran et fichiers de test locaux
+/*.png
+/test-doc*.pdf
 # Scaffold demos (not needed for deployment)
 /examples/
 /mini-services/

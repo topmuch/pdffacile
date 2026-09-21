@@ -23,16 +23,18 @@ export const metadata: Metadata = {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
-    url: "https://chat.z.ai",
-    siteName: "Z.ai",
+    title: "PDFFacile — Tous les outils PDF gratuits en ligne",
+    description:
+      "Fusionnez, compressez et convertissez vos fichiers PDF, Word, Excel, PowerPoint et images. 100 % gratuit, sans inscription.",
+    url: "https://pdffacile.app",
+    siteName: "PDFFacile",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Z.ai Code Scaffold",
-    description: "AI-powered development with modern React stack",
+    title: "PDFFacile — Outils PDF 100 % gratuits",
+    description:
+      "Fusionnez, compressez, convertissez. Gratuit, sans inscription, 100 % privé.",
   },
 };
 

@@ -1,13 +1,12 @@
 export type ToolId =
   | "merge"
-  | "split"
+  | "word2pdf"
   | "compress"
-  | "rotate"
-  | "img2pdf"
-  | "pdf2img"
-  | "pagenum"
-  | "watermark"
-  | "organize";
+  | "pdf2excel"
+  | "excel2pdf"
+  | "pdf2jpg"
+  | "jpg2pdf"
+  | "pptx2pdf";
 
 export interface ToolDef {
   id: ToolId;
@@ -20,7 +19,7 @@ export interface ToolDef {
   multiple: boolean;
   minFiles: number;
   maxFiles: number;
-  category: "organiser" | "optimiser" | "convertir" | "modifier";
+  category: "organiser" | "optimiser" | "convertir";
 }
 
 export const TOOLS: ToolDef[] = [
@@ -39,18 +38,19 @@ export const TOOLS: ToolDef[] = [
     category: "organiser",
   },
   {
-    id: "split",
-    title: "Diviser PDF",
-    tagline: "Séparez un PDF en plusieurs documents",
+    id: "word2pdf",
+    title: "Word to PDF",
+    tagline: "Convertissez vos documents Word",
     description:
-      "Une page par fichier, des paquets de pages ou des plages personnalisées.",
-    color: "#f4840c",
-    icon: "scissors",
-    accept: "application/pdf",
+      "Transformez vos fichiers .docx en PDF fidèles : titres, listes, tableaux et images sont conservés.",
+    color: "#2b579a",
+    icon: "file-text",
+    accept:
+      ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     multiple: false,
     minFiles: 1,
     maxFiles: 1,
-    category: "organiser",
+    category: "convertir",
   },
   {
     id: "compress",
@@ -67,88 +67,76 @@ export const TOOLS: ToolDef[] = [
     category: "optimiser",
   },
   {
-    id: "rotate",
-    title: "Pivoter PDF",
-    tagline: "Redressez vos pages en un clic",
+    id: "pdf2excel",
+    title: "PDF to Excel",
+    tagline: "Extrayez vos tableaux vers Excel",
     description:
-      "Faites pivoter toutes les pages de 90°, 180° ou 270° et récupérez un PDF net.",
-    color: "#8f00e0",
-    icon: "rotate",
+      "Récupérez le texte et les tableaux de votre PDF dans un classeur .xlsx, une feuille par page.",
+    color: "#21a366",
+    icon: "file-spreadsheet",
     accept: "application/pdf",
     multiple: false,
     minFiles: 1,
     maxFiles: 1,
-    category: "organiser",
+    category: "convertir",
   },
   {
-    id: "img2pdf",
-    title: "Images vers PDF",
+    id: "excel2pdf",
+    title: "Excel to PDF",
+    tagline: "Transformez vos tableaux en PDF",
+    description:
+      "Convertissez vos feuilles de calcul .xlsx ou .csv en PDF propres, tableaux mise en page incluse.",
+    color: "#107c41",
+    icon: "table",
+    accept:
+      ".xlsx,.csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv",
+    multiple: false,
+    minFiles: 1,
+    maxFiles: 1,
+    category: "convertir",
+  },
+  {
+    id: "pdf2jpg",
+    title: "PDF to JPG",
+    tagline: "Exportez chaque page en image",
+    description:
+      "Convertissez les pages de votre PDF en images JPG haute résolution, livrées dans une archive ZIP.",
+    color: "#0cc0df",
+    icon: "file-image",
+    accept: "application/pdf",
+    multiple: false,
+    minFiles: 1,
+    maxFiles: 1,
+    category: "convertir",
+  },
+  {
+    id: "jpg2pdf",
+    title: "JPG to PDF",
     tagline: "Transformez vos photos en document",
     description:
-      "JPG, PNG, WebP… Convertissez vos images en PDF, format A4 ou taille automatique.",
+      "Assemblez vos images JPG en un PDF, au format A4 ou à la taille exacte de chaque image.",
     color: "#d96514",
     icon: "image",
-    accept: "image/*",
+    accept: "image/jpeg,.jpg,.jpeg",
     multiple: true,
     minFiles: 1,
     maxFiles: 60,
     category: "convertir",
   },
   {
-    id: "pdf2img",
-    title: "PDF vers Images",
-    tagline: "Exportez chaque page en image",
+    id: "pptx2pdf",
+    title: "PowerPoint to PDF",
+    tagline: "Convertissez vos présentations",
     description:
-      "Convertissez les pages de votre PDF en images PNG ou JPG haute résolution.",
-    color: "#0cc0df",
-    icon: "images",
-    accept: "application/pdf",
+      "Exportez vos diapositives .pptx en PDF au format 16:9 : titres et contenu texte de chaque slide.",
+    color: "#d24726",
+    icon: "presentation",
+    accept:
+      ".pptx,application/vnd.openxmlformats-officedocument.presentationml.presentation",
     multiple: false,
     minFiles: 1,
     maxFiles: 1,
     category: "convertir",
-  },
-  {
-    id: "pagenum",
-    title: "Numéroter pages",
-    tagline: "Ajoutez des numéros de page",
-    description:
-      "Position, format « n » ou « n / N », première page ignorée : tout est réglable.",
-    color: "#b833e0",
-    icon: "hash",
-    accept: "application/pdf",
-    multiple: false,
-    minFiles: 1,
-    maxFiles: 1,
-    category: "modifier",
-  },
-  {
-    id: "watermark",
-    title: "Filigrane",
-    tagline: "Marquez vos documents en diagonale",
-    description:
-      "Ajoutez un texte discret ou en mosaïque pour protéger vos documents sensibles.",
-    color: "#7c3aed",
-    icon: "stamp",
-    accept: "application/pdf",
-    multiple: false,
-    minFiles: 1,
-    maxFiles: 1,
-    category: "modifier",
-  },
-  {
-    id: "organize",
-    title: "Organiser pages",
-    tagline: "Extrayez ou supprimez des pages",
-    description:
-      "Visualisez chaque page, sélectionnez celles à garder ou à retirer du document.",
-    color: "#e51e79",
-    icon: "layout",
-    accept: "application/pdf",
-    multiple: false,
-    minFiles: 1,
-    maxFiles: 1,
-    category: "organiser",
   },
 ];
 
@@ -160,5 +148,4 @@ export const CATEGORIES: { id: ToolDef["category"]; label: string }[] = [
   { id: "organiser", label: "Organiser" },
   { id: "optimiser", label: "Optimiser" },
   { id: "convertir", label: "Convertir" },
-  { id: "modifier", label: "Modifier" },
 ];
